@@ -90,8 +90,10 @@ public class ScopeBeanFactory {
         this.registerBean(null, bean);
     }
 
+    //
     public void registerBean(String name, Object bean) {
         // avoid duplicated register same bean
+        //避免重复注册同一个bean
         if (containsBean(name, bean)) {
             return;
         }
@@ -147,11 +149,13 @@ public class ScopeBeanFactory {
         return bean;
     }
 
+    //SPI扩展可以实现 这个感知接口来获取适当的 {@link ExtensionAccessor} 实例。
     private void initializeBean(String name, Object bean) {
         try {
             if (bean instanceof ExtensionAccessorAware) {
                 ((ExtensionAccessorAware) bean).setExtensionAccessor(extensionAccessor);
             }
+            //后置处理器
             for (ExtensionPostProcessor processor : extensionPostProcessors) {
                 processor.postProcessAfterInitialization(bean, name);
             }
